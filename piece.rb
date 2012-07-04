@@ -74,7 +74,7 @@ class Piece
     curx = Grid.nearest_x(@x)
     cury = Grid.nearest_y(@y)
     if (0..amount).any? { |test| @grid.filled.include?([curx,cury+test]) ||
-      current_shape.any? { |shape| @grid.filled.include?([curx + shape[0],cury + test + shape[1]]) } }
+                          current_shape.any? { |shape| @grid.filled.include?([curx + shape[0],cury + test + shape[1]]) } }
       @grid.fit_to_grid(self)
       @window.piece = Piece.new(@window, @grid)
     else
@@ -85,12 +85,9 @@ class Piece
   def move_left
     if @x > Grid::GRID_LEFT
       if current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK > Grid::GRID_LEFT }
-        if (0..12).all? do |test|
-          !@grid.filled.include?([Grid.nearest_x(@x-test),Grid.nearest_y(@y)]) && current_shape.all? do |shape|
-            !@grid.filled.include?([Grid.nearest_x(@x-test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)])
-              @x -= 12
-            end
-          end
+        if (0..12).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x-test),Grid.nearest_y(@y)]) &&
+                          current_shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x-test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
+          @x -= 12
         end
       end
     end
@@ -99,12 +96,9 @@ class Piece
   def move_right
     if @x < Grid::GRID_RIGHT
       if current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK < Grid::GRID_RIGHT }
-        if (0..12).all? do |test|
-          !@grid.filled.include?([Grid.nearest_x(@x+test),Grid.nearest_y(@y)]) && current_shape.all? do |shape|
-            !@grid.filled.include?([Grid.nearest_x(@x+test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)])
-              @x += 12
-            end
-          end
+        if (0..12).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x+test),Grid.nearest_y(@y)]) &&
+                          current_shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x+test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
+          @x += 12
         end
       end
     end
