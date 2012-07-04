@@ -9,6 +9,7 @@ class GameWindow < Gosu::Window
     @background_image = Gosu::Image.new(self, "bg.png", true)
     @piece = Piece.new(self)
     @grid = Grid.new(self)
+
   end
 
   def update
