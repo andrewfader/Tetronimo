@@ -22,7 +22,7 @@ class Grid
   end
 
   def self.nearest_y(y)
-     (GRID_BOTTOM-y*PX_PER_BLOCK)
+    (GRID_BOTTOM-y)/PX_PER_BLOCK
   end
 
   def fit_to_grid(piece)
@@ -47,7 +47,7 @@ class Grid
       @to_fill << newxy
     end
 
-    if @to_fill.any? { |xy| Grid.nearest_y(xy[1]) <= GRID_TOP }
+    if @to_fill.any? { |xy| GRID_BOTTOM-xy[1]*PX_PER_BLOCK <= GRID_TOP }
       @song.stop
       @gameover.play
       sleep 3

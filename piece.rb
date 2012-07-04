@@ -73,8 +73,10 @@ class Piece
   def move(amount=4)
     curx = Grid.nearest_x(@x)
     cury = Grid.nearest_y(@y)
+    p [curx, cury]
+    p @grid.filled
     if @grid.filled.include?([curx,cury+amount]) ||
-      current_shape.any? { |shape| @grid.filled.include?([curx + shape[0]*Grid::PX_PER_BLOCK,cury + amount + shape[1]*Grid::PX_PER_BLOCK]) }
+      current_shape.any? { |shape| @grid.filled.include?([curx + shape[0],cury + amount + shape[1]]) }
       @grid.fit_to_grid(self)
       @window.piece = Piece.new(@window, @grid)
     else
