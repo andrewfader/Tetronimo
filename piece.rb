@@ -67,11 +67,11 @@ class Piece
   end
 
   def move_left
-    @x -= 28
+    @x -= 12 if @x > 300
   end
 
   def move_right
-    @x += 28
+    @x += 12 if @x < 700
   end
 
   def drop_faster

@@ -18,11 +18,15 @@ class GameWindow < Gosu::Window
     end
      if button_down? Gosu::KbDown or button_down? Gosu::GpDown then
       @piece.drop_faster
-    end
-    if button_down? Gosu::KbUp or button_down? Gosu::GpUp then
-      @piece.rotate_right
-    end
-    @piece.move
+     end
+     if button_down? Gosu::KbUp or button_down? Gosu::GpUp then
+       @piece.rotate_right
+     end
+     if @piece.y < 800
+       @piece.move
+     else
+       @piece = Piece.new(self)
+     end
   end
 
   def draw
