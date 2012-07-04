@@ -14,8 +14,8 @@ class Piece
 
   def draw
     @image.draw(@x,@y,100)
-    current_shape.each do |xy|
-      @image.draw(@x+28*xy[0],@y+28*xy[1], 100)
+    current_shape.each do |x,y|
+      @image.draw(@x+Grid::PX_PER_BLOCK*x,@y+Grid::PX_PER_BLOCK*y, 100)
     end
   end
 

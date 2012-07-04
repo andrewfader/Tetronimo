@@ -35,31 +35,32 @@ class Grid
     @to_fill << firstxy
 
     @shift_up = 0
-    piece.current_shape.each do |xy|
-      newxy = [firstxy[0]+xy[0] + @shift_up,firstxy[1]+xy[1] + @shift_up]
+    piece.current_shape.each do |shape_x,shape_y|
+      newxy = [firstxy[0] + shape_x + @shift_up,firstxy[1] + shape_y + @shift_up]
       while @filled.include? newxy
         newxy = [newxy[0], newxy[1]+1]
         @shift_up += 1
-        @to_fill = @to_fill.map do |xy|
-          xy = [xy[0], xy[1]+1]
+        @to_fill = @to_fill.map do |fill_x,fill_y|
+          xy = [fill_x,fill_y + 1]
         end
       end
       @to_fill << newxy
     end
 
-    if @to_fill.any? { |xy| GRID_BOTTOM-xy[1]*PX_PER_BLOCK <= GRID_TOP }
+    if @to_fill.any? { |x,y| GRID_BOTTOM-y*PX_PER_BLOCK <= GRID_TOP }
       @song.stop
       @gameover.play
       sleep 3
-      @window.close
+      @window.gameover
+      return
     end
 
     @filled = @filled | @to_fill
 
-    @filled.map{|xy| xy[1]}.uniq.each do |y|
-      if (0..GRID_LENGTH).all? { |x| p [x,y]; @filled.include? [x,y] }
+    @filled.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
+      if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
         @filled.each do |xy|
-          if xy[1] == y
+          if xy[1] == filled_y
             @filled.delete(xy)
           end
         end
