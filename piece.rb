@@ -9,6 +9,7 @@ class Piece
     @shape = Piece.set_shape(type)
     @rotation = 0
     @grid = grid
+    @window = window
   end
 
   def draw
@@ -69,15 +70,23 @@ class Piece
     @rotation > 0 ? @rotation -= 1 : @rotation = 3
   end
 
-  def move
-    @y += 4
+  def move(amount=4)
+    curx = Grid.nearest_x(@x)
+    cury = Grid.nearest_y(@y)
+    if @grid.filled.include?([curx,cury+amount]) ||
+      current_shape.any? { |shape| @grid.filled.include?([curx + shape[0]*Grid::PX_PER_BLOCK,cury + amount + shape[1]*Grid::PX_PER_BLOCK]) }
+      @grid.fit_to_grid(self)
+      @window.piece = Piece.new(@window, @grid)
+    else
+      @y += amount
+    end
   end
 
   def move_left
     if @x > Grid::GRID_LEFT &&
       current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK > Grid::GRID_LEFT } &&
       !@grid.filled.include?([@x-12,@y]) &&
-      current_shape.all? { |shape| !@grid.filled.include?([@x-12 + shape[0]*Grid::PX_PER_BLOCK,@y]) }
+      current_shape.all? { |shape| !@grid.filled.include?([@x-12 + shape[0]*Grid::PX_PER_BLOCK,@y + shape[1]*Grid::PX_PER_BLOCK]) }
       @x -= 12
     end
   end
@@ -86,13 +95,13 @@ class Piece
     if @x < Grid::GRID_RIGHT &&
       current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK < Grid::GRID_RIGHT } &&
       !@grid.filled.include?([@x+12,@y]) &&
-      current_shape.all? { |shape| !@grid.filled.include?([@x+12 + shape[0]*Grid::PX_PER_BLOCK,@y]) }
+      current_shape.all? { |shape| !@grid.filled.include?([@x+12 + shape[0]*Grid::PX_PER_BLOCK,@y + shape[1]*Grid::PX_PER_BLOCK]) }
       @x += 12
     end
   end
 
   def drop_faster
-    @y += 28
+    move(28)
   end
 
 end

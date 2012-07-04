@@ -17,10 +17,18 @@ class Grid
     @window = window
   end
 
+  def self.nearest_x(x)
+    ((x - GRID_LEFT)/PX_PER_BLOCK).round
+  end
+
+  def self.nearest_y(y)
+     (GRID_BOTTOM-y*PX_PER_BLOCK)
+  end
+
   def fit_to_grid(piece)
     @to_fill = []
 
-    nearest_x = ((piece.x - GRID_LEFT)/PX_PER_BLOCK).round
+    nearest_x = Grid.nearest_x(piece.x)
     nearest_x = 0 if nearest_x == -1
     firstxy = [nearest_x, 0]
     firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy
@@ -39,7 +47,7 @@ class Grid
       @to_fill << newxy
     end
 
-    if @to_fill.any? { |xy| (GRID_BOTTOM-xy[1]*PX_PER_BLOCK) <= GRID_TOP }
+    if @to_fill.any? { |xy| Grid.nearest_y(xy[1]) <= GRID_TOP }
       @song.stop
       @gameover.play
       sleep 3
@@ -48,15 +56,11 @@ class Grid
 
     @filled = @filled | @to_fill
 
-    p @filled
     @filled.map{|xy| xy[1]}.uniq.each do |y|
       if (0..GRID_LENGTH).all? { |x| p [x,y]; @filled.include? [x,y] }
-        p y
         @filled.each do |xy|
           if xy[1] == y
-            p "AAAA#{xy}";
             @filled.delete(xy)
-            p "GOOG #{@filled}"
           end
         end
       end

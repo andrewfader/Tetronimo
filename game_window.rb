@@ -2,6 +2,7 @@ require 'rubygems'
 require 'gosu'
 require './piece'
 class GameWindow < Gosu::Window
+  attr_accessor :piece
   def initialize
     super 1024, 960, false
     self.caption = "Tetronimo"
