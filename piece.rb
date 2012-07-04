@@ -1,22 +1,27 @@
 class Piece
-  attr_accessor :x, :y, :type
+  attr_accessor :x, :y, :current_shape
   def initialize(window)
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
     @y = 200
-    @type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
+    type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
+    @shape = Piece.set_shape(type)
     @rotation = 0
   end
 
   def draw
     @image.draw(@x,@y,100)
-    shape[@rotation].each do |xy|
+    current_shape.each do |xy|
       @image.draw(@x+28*xy[0],@y+28*xy[1], 100)
     end
   end
 
-  def shape
-    case @type
+  def current_shape
+    @shape[@rotation]
+  end
+
+  def self.set_shape(type)
+    case type
     when :I
       {0 => [[1,0],[2,0],[3,0]],
        1 => [[0,-1],[0,-2],[0,-3]],
