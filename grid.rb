@@ -45,12 +45,12 @@ class Grid
     firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy
     @to_fill << firstxy
 
-    @shift_up = 0
+    shift_up = 0
     piece.current_shape.each do |shape_x,shape_y|
-      shapexy = [firstxy[0] + shape_x,firstxy[1] + shape_y + @shift_up]
+      shapexy = [firstxy[0] + shape_x,firstxy[1] + shape_y + shift_up]
       while @filled.include? shapexy
         shapexy = [shapexy[0], shapexy[1]+1]
-        @shift_up += 1
+        shift_up += 1
         @to_fill = @to_fill.map { |fill_x,fill_y| [fill_x,fill_y + 1] }
       end
       @to_fill << shapexy
@@ -71,12 +71,13 @@ class Grid
 
   def check_for_lines
     @filled.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
-      if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
+      if (0..GRID_LENGTH).all? { |grid_x| p @filled; p [grid_x,filled_y]; @filled.include? [grid_x,filled_y] }
         @filled.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
         @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] }
         @lines+=1
       end
     end
+    p @lines
   end
 
   def draw

@@ -85,8 +85,12 @@ class Piece
   def move_left
     if @x > Grid::GRID_LEFT
       if current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK > Grid::GRID_LEFT }
-        if (0..12).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x-test),Grid.nearest_y(@y)]) && current_shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x-test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
-          @x -= 12
+        if (0..12).all? do |test|
+          !@grid.filled.include?([Grid.nearest_x(@x-test),Grid.nearest_y(@y)]) && current_shape.all? do |shape|
+            !@grid.filled.include?([Grid.nearest_x(@x-test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)])
+              @x -= 12
+            end
+          end
         end
       end
     end
@@ -95,8 +99,12 @@ class Piece
   def move_right
     if @x < Grid::GRID_RIGHT
       if current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK < Grid::GRID_RIGHT }
-        if (0..12).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x+test),Grid.nearest_y(@y)]) && current_shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x+test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
-          @x += 12
+        if (0..12).all? do |test|
+          !@grid.filled.include?([Grid.nearest_x(@x+test),Grid.nearest_y(@y)]) && current_shape.all? do |shape|
+            !@grid.filled.include?([Grid.nearest_x(@x+test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)])
+              @x += 12
+            end
+          end
         end
       end
     end
