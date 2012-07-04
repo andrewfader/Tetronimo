@@ -7,7 +7,7 @@ class Piece
     @y = Grid::GRID_TOP
     type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @shape = Piece.set_shape(type)
-    @rotation = 0
+    @rotation ||= 0
     @grid = grid
     @window = window
   end

@@ -30,6 +30,7 @@ class GameWindow < Gosu::Window
         @piece.move
       else
         @grid.fit_to_grid(@piece)
+        @grid.check_for_lines
         @piece = Piece.new(self, @grid)
       end
     else
