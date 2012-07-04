@@ -20,17 +20,18 @@ class Grid
   def fit_to_grid(piece)
     @to_fill = []
 
-    nearest_x = ((piece.x - GRID_LEFT)/PX_PER_BLOCK).floor
+    nearest_x = ((piece.x - GRID_LEFT)/PX_PER_BLOCK).round
     nearest_x = 0 if nearest_x == -1
     firstxy = [nearest_x, 0]
     firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy
     @to_fill << firstxy
 
+    @shift_up = 0
     piece.current_shape.each do |xy|
-      newxy = [firstxy[0]+xy[0],firstxy[1]+xy[1]]
+      newxy = [firstxy[0]+xy[0] + @shift_up,firstxy[1]+xy[1] + @shift_up]
       while @filled.include? newxy
         newxy = [newxy[0], newxy[1]+1]
-
+        @shift_up += 1
         @to_fill = @to_fill.map do |xy|
           xy = [xy[0], xy[1]+1]
         end
@@ -50,8 +51,14 @@ class Grid
     p @filled
     @filled.map{|xy| xy[1]}.uniq.each do |y|
       if (0..GRID_LENGTH).all? { |x| p [x,y]; @filled.include? [x,y] }
-        @filled.each { |xy| @filled.delete(xy) if xy[1] == y }
-        p "GOOG #{@filled}"
+        p y
+        @filled.each do |xy|
+          if xy[1] == y
+            p "AAAA#{xy}";
+            @filled.delete(xy)
+            p "GOOG #{@filled}"
+          end
+        end
       end
     end
   end
