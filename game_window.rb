@@ -7,9 +7,8 @@ class GameWindow < Gosu::Window
     self.caption = "Tetronimo"
 
     @background_image = Gosu::Image.new(self, "bg.png", true)
-    @piece = Piece.new(self)
     @grid = Grid.new(self)
-
+    @piece = Piece.new(self, @grid)
   end
 
   def update
@@ -29,7 +28,7 @@ class GameWindow < Gosu::Window
        @piece.move
      else
        @grid.fit_to_grid(@piece)
-       @piece = Piece.new(self)
+       @piece = Piece.new(self, @grid)
      end
   end
 
