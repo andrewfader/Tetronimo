@@ -25,6 +25,14 @@ class Grid
     (GRID_BOTTOM-y)/PX_PER_BLOCK
   end
 
+  def self.y_to_px(y)
+    GRID_BOTTOM-y*PX_PER_BLOCK
+  end
+
+  def self.x_to_px(x)
+    GRID_LEFT+x*PX_PER_BLOCK
+  end
+
   def fit_to_grid(piece)
     @to_fill = []
 
@@ -47,7 +55,7 @@ class Grid
       @to_fill << newxy
     end
 
-    if @to_fill.any? { |x,y| GRID_BOTTOM-y*PX_PER_BLOCK <= GRID_TOP }
+    if @to_fill.any? { |x,y| Grid.y_to_px(y) <= GRID_TOP }
       @song.stop
       @gameover.play
       sleep 3
@@ -69,8 +77,8 @@ class Grid
   end
 
   def draw
-    @filled.each do |xy|
-      @image.draw(GRID_LEFT+xy[0]*PX_PER_BLOCK,GRID_BOTTOM-xy[1]*PX_PER_BLOCK, 100)
+    @filled.each do |x,y|
+      @image.draw(Grid.x_to_px(x),Grid.y_to_px(y), 100)
     end
   end
 end
