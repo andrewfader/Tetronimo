@@ -11,13 +11,16 @@ class GameWindow < Gosu::Window
 
   def update
     if button_down? Gosu::KbLeft or button_down? Gosu::GpLeft then
-      @piece.rotate_left
+      @piece.move_left
     end
     if button_down? Gosu::KbRight or button_down? Gosu::GpRight then
-      @piece.rotate_right
+      @piece.move_right
     end
-    if button_down? Gosu::KbDown or button_down? Gosu::GpDown then
+     if button_down? Gosu::KbDown or button_down? Gosu::GpDown then
       @piece.drop_faster
+    end
+    if button_down? Gosu::KbUp or button_down? Gosu::GpUp then
+      @piece.rotate_right
     end
     @piece.move
   end

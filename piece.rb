@@ -32,10 +32,10 @@ class Piece
        1 => [[0,-1],[0,-2],[-1,-2]],
        2 => [[-1,0],[-2,0],[-2,1]],
        3 => [[0,1],[0,2],[1,2]] }
-    # when :O
-      # [0..3].each_with_index.inject({}) do |hash,index|
-        # hash.merge!({index => [[0,1],[1,1],[1,0]]})
-      # end
+    when :O
+      [0,1,2,3].each_with_index.inject({}) do |hash,index|
+        hash.merge!({index[0] => [[0,1],[1,1],[1,0]]})
+      end
     when :S
       {0 => [[1,0],[0,-1],[-1,-1]],
        1 => [[0,-1],[1,-1],[1,-2]],
@@ -54,8 +54,28 @@ class Piece
     end
   end
 
-  def move
+  def rotate_right
+    @rotation < 3 ? @rotation += 1 : @rotation = 0
+  end
 
+  def rotate_left
+    @rotation > 0 ? @rotation -= 1 : @rotation = 3
+  end
+
+  def move
+    @y += 4
+  end
+
+  def move_left
+    @x -= 28
+  end
+
+  def move_right
+    @x += 28
+  end
+
+  def drop_faster
+    @y += 28
   end
 
 end
