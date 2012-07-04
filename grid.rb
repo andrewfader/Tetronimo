@@ -1,5 +1,4 @@
 class Grid
-  attr_accessor :height
   GRID_LEFT = 350
   GRID_RIGHT = 650
   GRID_TOP = 200
@@ -13,19 +12,17 @@ class Grid
   end
 
   def fit_to_grid(piece)
-    @height = 0
     nearest_x = ((piece.x - GRID_LEFT)/PX_PER_BLOCK).floor
-    nearest_y = @height
+    nearest_y = 0
 
     @to_fill = []
     firstxy = [nearest_x, nearest_y]
-    firstxy = [nearest_x, nearest_y+1] while @filled.include? firstxy
+    firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy
     @to_fill << firstxy
-
     piece.current_shape.each do |xy|
-      newxy = [nearest_x+xy[0],nearest_y+xy[1]]
+      newxy = [firstxy[0]+xy[0],firstxy[1]+xy[1]]
       while @filled.include? newxy
-        newxy = [nearest_x, nearest_y+1]
+        newxy = [newxy[0], newxy[1]+1]
         @to_fill = @to_fill.map do |xy|
           [xy[0], xy[1]+1]
         end
