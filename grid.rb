@@ -2,7 +2,7 @@ class Grid
   GRID_LEFT = 385
   GRID_RIGHT = 670
   GRID_TOP = 200
-  GRID_BOTTOM = 820
+  GRID_BOTTOM = 780
   PX_PER_BLOCK = 28
   GRID_LENGTH = (GRID_RIGHT-GRID_LEFT)/PX_PER_BLOCK.floor
 
@@ -18,11 +18,15 @@ class Grid
   end
 
   def self.nearest_x(x)
-    ((x - GRID_LEFT)/PX_PER_BLOCK).round
+    nearest_x = ((x - GRID_LEFT)/PX_PER_BLOCK).round
+    nearest_x = 0 if nearest_x == -1
+    nearest_x
   end
 
   def self.nearest_y(y)
-    (GRID_BOTTOM-y)/PX_PER_BLOCK
+    nearest_y = (GRID_BOTTOM-y)/PX_PER_BLOCK
+    nearest_y 0 if nearest_y == -1
+    nearest_y
   end
 
   def self.y_to_px(y)
@@ -36,23 +40,21 @@ class Grid
   def fit_to_grid(piece)
     @to_fill = []
 
-    nearest_x = Grid.nearest_x(piece.x)
-    nearest_x = 0 if nearest_x == -1
-    firstxy = [nearest_x, 0]
+    firstxy = [Grid.nearest_x(piece.x), 0]
     firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy
     @to_fill << firstxy
 
     @shift_up = 0
     piece.current_shape.each do |shape_x,shape_y|
-      newxy = [firstxy[0] + shape_x + @shift_up,firstxy[1] + shape_y + @shift_up]
-      while @filled.include? newxy
-        newxy = [newxy[0], newxy[1]+1]
+      shapexy = [firstxy[0] + shape_x,firstxy[1] + shape_y + @shift_up]
+      while @filled.include? shapexy
+        shapexy = [shapexy[0], shapexy[1]+1]
         @shift_up += 1
         @to_fill = @to_fill.map do |fill_x,fill_y|
           xy = [fill_x,fill_y + 1]
         end
       end
-      @to_fill << newxy
+      @to_fill << shapexy
     end
 
     if @to_fill.any? { |x,y| Grid.y_to_px(y) <= GRID_TOP }
