@@ -73,7 +73,7 @@ class Grid
   def check_for_lines
     lines = 0
     @filled.compact.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
-      if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
+      while (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
         @filled.compact.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
         @filled.compact!
         @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] if fill_y > filled_y }
@@ -82,7 +82,6 @@ class Grid
     end
     @lines+=lines
     @tetrises+=1 if lines >=4
-    p lines
   end
 
   def draw
