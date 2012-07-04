@@ -10,9 +10,6 @@ class GameWindow < Gosu::Window
     @background_image = Gosu::Image.new(self, "bg.png", true)
     @menu = Gosu::Image.new(self, "menu.png", true)
     @game_start = false
-    @font = Gosu::Font.new(self, Gosu::default_font_name, 20)
-    @font.draw("Press enter to begin", 10, 10, 100, 1.0, 1.0, 0xffffffff)
-
   end
 
   def update
