@@ -23,8 +23,8 @@ class GameWindow < Gosu::Window
   end
 
   def draw
-    @piece.draw
     @background_image.draw(0,0,0);
+    @piece.draw
   end
 
   def button_down(id)
