@@ -1,5 +1,8 @@
 require './grid'
 class Piece
+  HORIZONTAL_MOVEMENT_AMOUNT = 9
+  VERTICAL_MOVEMENT_AMOUNT = 4
+
   attr_accessor :x, :y, :current_shape
   def initialize(window, grid)
     @image = Gosu::Image.new(window, 'block.png', false)
@@ -70,7 +73,7 @@ class Piece
     @rotation > 0 ? @rotation -= 1 : @rotation = 3
   end
 
-  def move(amount=4)
+  def move(amount=VERTICAL_MOVEMENT_AMOUNT)
     curx = Grid.nearest_x(@x)
     cury = Grid.nearest_y(@y)
     if (0..amount).any? { |test| @grid.filled.include?([curx,cury+test]) ||
@@ -82,23 +85,23 @@ class Piece
     end
   end
 
-  def move_left
+  def move_left(amount=HORIZONTAL_MOVEMENT_AMOUNT)
     if @x > Grid::GRID_LEFT
       if current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK > Grid::GRID_LEFT }
-        if (0..12).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x-test),Grid.nearest_y(@y)]) &&
+        if (0..amount).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x-test),Grid.nearest_y(@y)]) &&
                           current_shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x-test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
-          @x -= 12
+          @x -= amount
         end
       end
     end
   end
 
-  def move_right
+  def move_right(amount=HORIZONTAL_MOVEMENT_AMOUNT)
     if @x < Grid::GRID_RIGHT
       if current_shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK < Grid::GRID_RIGHT }
-        if (0..12).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x+test),Grid.nearest_y(@y)]) &&
+        if (0..amount).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x+test),Grid.nearest_y(@y)]) &&
                           current_shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x+test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
-          @x += 12
+          @x += amount
         end
       end
     end

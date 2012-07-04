@@ -16,6 +16,7 @@ class Grid
     @song.play(true)
     @window = window
     @lines = 0
+    @tetrises = 0
   end
 
   def self.nearest_x(x)
@@ -41,7 +42,7 @@ class Grid
   def fit_to_grid(piece)
     @to_fill = []
 
-    firstxy = [Grid.nearest_x(piece.x), 0]
+    firstxy = [Grid.nearest_x(piece.x), Grid.nearest_y(piece.y)]
     firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy
     @to_fill << firstxy
 
@@ -49,9 +50,9 @@ class Grid
     piece.current_shape.each do |shape_x,shape_y|
       shapexy = [firstxy[0] + shape_x,firstxy[1] + shape_y + shift_up]
       while @filled.include? shapexy
-        shapexy = [shapexy[0], shapexy[1]+1]
         shift_up += 1
         @to_fill = @to_fill.map { |fill_x,fill_y| [fill_x,fill_y + 1] }
+        shapexy = [shapexy[0], shapexy[1]+1]
       end
       @to_fill << shapexy
     end
@@ -70,17 +71,21 @@ class Grid
 
 
   def check_for_lines
-    @filled.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
-      if (0..GRID_LENGTH).all? { |grid_x| p @filled; p [grid_x,filled_y]; @filled.include? [grid_x,filled_y] }
-        @filled.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
-        @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] }
-        @lines+=1
+    lines = 0
+    @filled.compact.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
+      if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
+        @filled.compact.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
+        @filled.compact!
+        @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] if fill_y > filled_y }
+        lines+=1
       end
     end
-    p @lines
+    @lines+=lines
+    @tetrises+=1 if lines >=4
+    p lines
   end
 
   def draw
-    @filled.each { |x,y| @image.draw(Grid.x_to_px(x),Grid.y_to_px(y), 100) }
+    @filled.each { |x,y| @image.draw(Grid.x_to_px(x),Grid.y_to_px(y), 100) if x && y }
   end
 end
