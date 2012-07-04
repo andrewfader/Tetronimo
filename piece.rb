@@ -4,7 +4,7 @@ class Piece
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
     @y = 200
-    @type = [:I,:J,:L,:O,:S,:T,:Z].sample
+    @type = [:I,:J,:L,:O,:S,:T,:Z].choice
     @rotation = 0
   end
 

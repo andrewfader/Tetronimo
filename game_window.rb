@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'gosu'
 require './piece'
 class GameWindow < Gosu::Window
