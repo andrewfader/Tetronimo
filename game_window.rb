@@ -8,6 +8,7 @@ class GameWindow < Gosu::Window
 
     @background_image = Gosu::Image.new(self, "bg.png", true)
     @piece = Piece.new(self)
+    @grid = Grid.new(self)
   end
 
   def update
@@ -23,9 +24,10 @@ class GameWindow < Gosu::Window
      if button_down? Gosu::KbUp or button_down? Gosu::GpUp then
        @piece.rotate_right
      end
-     if @piece.y < 800
+     if @piece.y < Grid::GRID_BOTTOM
        @piece.move
      else
+       @grid.fit_to_grid(@piece)
        @piece = Piece.new(self)
      end
   end
@@ -33,6 +35,7 @@ class GameWindow < Gosu::Window
   def draw
     @background_image.draw(0,0,0);
     @piece.draw
+    @grid.draw
   end
 
   def button_down(id)

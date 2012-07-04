@@ -1,9 +1,10 @@
+require './grid'
 class Piece
   attr_accessor :x, :y, :current_shape
   def initialize(window)
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
-    @y = 200
+    @y = Grid::GRID_TOP
     type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @shape = Piece.set_shape(type)
     @rotation = 0
@@ -72,11 +73,11 @@ class Piece
   end
 
   def move_left
-    @x -= 12 if @x > 350
+    @x -= 12 if @x > Grid::GRID_LEFT
   end
 
   def move_right
-    @x += 12 if @x < 650
+    @x += 12 if @x < Grid::GRID_RIGHT
   end
 
   def drop_faster
