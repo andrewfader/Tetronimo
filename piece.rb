@@ -4,7 +4,7 @@ class Piece
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
     @y = 200
-    @type = [:I,:J,:L,:O,:S,:T,:Z].choice
+    @type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @rotation = 0
   end
 
@@ -67,11 +67,11 @@ class Piece
   end
 
   def move_left
-    @x -= 12 if @x > 300
+    @x -= 12 if @x > 350
   end
 
   def move_right
-    @x += 12 if @x < 700
+    @x += 12 if @x < 650
   end
 
   def drop_faster
