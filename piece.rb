@@ -1,15 +1,15 @@
 require './grid'
 class Piece
-  HORIZONTAL_MOVEMENT_AMOUNT = 9
-  VERTICAL_MOVEMENT_AMOUNT = 4
+  HORIZONTAL_MOVEMENT_AMOUNT = 30
+  VERTICAL_MOVEMENT_AMOUNT = 20
 
   attr_accessor :x, :y, :current_shape
   def initialize(window, grid)
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
     @y = Grid::GRID_TOP
-    # type = [:I, :O].shuffle.first
-    type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
+    type = [:I, :O].shuffle.first
+    # type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @shape = Piece.set_shape(type)
     @rotation ||= 0
     @grid = grid
