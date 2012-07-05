@@ -4,7 +4,7 @@ require './piece'
 class GameWindow < Gosu::Window
   attr_accessor :piece
   def initialize
-    super 1024, 960, false, 60
+    super 1024, 960, false, 30
     self.caption = "Tetronimo"
 
     @background_image = Gosu::Image.new(self, "bg.png", true)
