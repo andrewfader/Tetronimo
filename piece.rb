@@ -8,8 +8,8 @@ class Piece
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
     @y = Grid::GRID_TOP
-    type = [:I, :O].shuffle.first
-    # type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
+    # type = [:I, :O].shuffle.first
+    type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @shape = Piece.set_shape(type)
     @rotation ||= 0
     @grid = grid
