@@ -74,7 +74,7 @@ class Piece
     curx = Grid.nearest_x(@x)
     cury = Grid.nearest_y(@y)
     if (0..amount).any? { |test| @grid.filled.include?([curx,cury+test]) ||
-                          current_shape.any? { |shape| @grid.filled.include?([curx + shape[0],cury + test + shape[1]]) } }
+                          current_shape.any? { |shape| @grid.filled.include?([curx - shape[0],cury + test - shape[1]]) } }
       @grid.fit_to_grid(self)
       @window.piece = Piece.new(@window, @grid)
     else
