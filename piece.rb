@@ -1,7 +1,7 @@
 require './grid'
 class Piece
   HORIZONTAL_MOVEMENT_AMOUNT = 24
-  VERTICAL_MOVEMENT_AMOUNT = 24
+  VERTICAL_MOVEMENT_AMOUNT = 12
 
   attr_accessor :x, :y, :current_shape
   def initialize(window, grid)

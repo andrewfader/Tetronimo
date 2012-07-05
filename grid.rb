@@ -4,7 +4,7 @@ class Grid
   GRID_TOP = 200
   GRID_BOTTOM = 800
   PX_PER_BLOCK = 28
-  GRID_LENGTH = (GRID_RIGHT-GRID_LEFT)/PX_PER_BLOCK.floor
+  GRID_LENGTH = (GRID_RIGHT-GRID_LEFT)/PX_PER_BLOCK.ceil
 
   attr_accessor :filled, :lines
 
