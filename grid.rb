@@ -17,7 +17,6 @@ class Grid
     @song.play(true)
     @window = window
     @lines = 0
-    @tetrises = 0
   end
 
   def self.nearest_x(x)
@@ -70,19 +69,15 @@ class Grid
   end
 
   def check_for_lines
-    lines = 0
     @filled.compact.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
       if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
         @filled.compact.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
         @filled.compact!
         @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] if fill_y > filled_y }
         @line.play
-        lines+=1
-        check_for_lines
       end
     end
-    @lines+=lines
-    @tetrises+=1 if lines >=4
+    @lines+=1
   end
 
   def draw
