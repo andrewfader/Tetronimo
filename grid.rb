@@ -20,13 +20,13 @@ class Grid
   end
 
   def self.nearest_x(x)
-    nearest_x = ((x - GRID_LEFT)/PX_PER_BLOCK).floor
+    nearest_x = ((x - GRID_LEFT)/PX_PER_BLOCK).round
     nearest_x = 0 if nearest_x <= -1
     nearest_x
   end
 
   def self.nearest_y(y)
-    nearest_y = ((GRID_BOTTOM-y)/PX_PER_BLOCK).floor
+    nearest_y = ((GRID_BOTTOM-y)/PX_PER_BLOCK).round
     nearest_y 0 if nearest_y <= -1
     nearest_y
   end
