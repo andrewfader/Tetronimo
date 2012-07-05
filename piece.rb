@@ -8,6 +8,7 @@ class Piece
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
     @y = Grid::GRID_TOP
+    # type = [:I, :O].shuffle.first
     type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @shape = Piece.set_shape(type)
     @rotation ||= 0
@@ -67,10 +68,6 @@ class Piece
 
   def rotate_right
     @rotation < 3 ? @rotation += 1 : @rotation = 0
-  end
-
-  def rotate_left
-    @rotation > 0 ? @rotation -= 1 : @rotation = 3
   end
 
   def move(amount=VERTICAL_MOVEMENT_AMOUNT)

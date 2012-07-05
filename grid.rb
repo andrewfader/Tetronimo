@@ -12,6 +12,7 @@ class Grid
     @image = Gosu::Image.new(window, 'block.png', false)
     @filled = []
     @gameover = Gosu::Sample.new(window, "shrink.wav")
+    @line = Gosu::Sample.new(window, "line.wav")
     @song = Gosu::Song.new(window, "tetris.wav")
     @song.play(true)
     @window = window
@@ -43,13 +44,13 @@ class Grid
     @to_fill = []
 
     firstxy = [Grid.nearest_x(piece.x), Grid.nearest_y(piece.y)]
-    firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy
+    firstxy = [firstxy[0], firstxy[1]+1] while @filled.include? firstxy || firstxy[1] < 0
     @to_fill << firstxy
 
     shift_up = 0
     piece.current_shape.each do |shape_x,shape_y|
       shapexy = [firstxy[0] + shape_x,firstxy[1] + shape_y + shift_up]
-      while @filled.include? shapexy
+      while @filled.include? shapexy || shapexy[1] < 0
         shift_up += 1
         @to_fill = @to_fill.map { |fill_x,fill_y| [fill_x,fill_y + 1] }
         shapexy = [shapexy[0], shapexy[1]+1]
@@ -68,16 +69,16 @@ class Grid
     @filled = @filled | @to_fill
   end
 
-
-
   def check_for_lines
     lines = 0
     @filled.compact.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
-      while (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
+      if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
         @filled.compact.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
         @filled.compact!
         @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] if fill_y > filled_y }
+        @line.play
         lines+=1
+        check_for_lines
       end
     end
     @lines+=lines

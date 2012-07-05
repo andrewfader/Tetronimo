@@ -25,13 +25,7 @@ class GameWindow < Gosu::Window
       end
       if button_down? Gosu::KbUp or button_down? Gosu::GpUp then
         @piece.rotate_right
-      end
-      if @piece.y < Grid::GRID_BOTTOM
-        @piece.move
-      else
-        @grid.fit_to_grid(@piece)
-        @grid.check_for_lines
-        @piece = Piece.new(self, @grid)
+        @piece.draw
       end
     else
       if button_down? Gosu::KbEnter or button_down? Gosu::KbReturn then
@@ -44,6 +38,13 @@ class GameWindow < Gosu::Window
 
   def draw
     if @game_start
+      if @piece.y < Grid::GRID_BOTTOM
+        @piece.move
+      else
+        @grid.fit_to_grid(@piece)
+        @grid.check_for_lines
+        @piece = Piece.new(self, @grid)
+      end
       @background_image.draw(0,0,0);
       @piece.draw
       @grid.draw
