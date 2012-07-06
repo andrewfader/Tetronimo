@@ -74,16 +74,23 @@ class Grid
       if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
         @filled.compact.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
         @filled.compact!
-        @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] if fill_y > filled_y }
+        @filled = @filled.map { |x,y| [x,y - 1] if y > filled_y }
         @line.play
       end
     end
     @lines+=1
   end
 
+  def check_for_gaps
+   if @filled.compact.select{|x,y| y == 0}.length == 0
+     @filled = @filled.compact.map{|x,y| [x,y - 1] if y}
+   end
+  end
+
   def draw
     check_for_lines
     @filled.compact!
+    check_for_gaps
     @filled.each { |fill| @filled.delete(fill) if fill[0] < 0 || fill[1] < 0 || fill[0] > GRID_LENGTH}
     @filled.each { |x,y| @image.draw(Grid.x_to_px(x),Grid.y_to_px(y), 100) if x && y }
   end
