@@ -4,7 +4,7 @@ class Grid
   GRID_TOP = 200
   GRID_BOTTOM = 800
   PX_PER_BLOCK = 28
-  GRID_LENGTH = (GRID_RIGHT-GRID_LEFT)/PX_PER_BLOCK.round
+  GRID_LENGTH = 10
 
   attr_accessor :filled, :lines
 
@@ -21,7 +21,8 @@ class Grid
 
   def self.nearest_x(x)
     nearest_x = ((x - GRID_LEFT)/PX_PER_BLOCK).round
-    nearest_x = 0 if nearest_x <= -1
+    nearest_x = 0 if nearest_x < 0
+    nearest_x = GRID_LENGTH if nearest_x > GRID_LENGTH
     nearest_x
   end
 
@@ -69,20 +70,21 @@ class Grid
   end
 
   def check_for_lines
-    p @filled
     @filled.compact.map{|filled_x,filled_y| filled_y}.uniq.each do |filled_y|
-      if (0..10).all? { |grid_x| @filled.include? [grid_x,filled_y] }
+      if (0..GRID_LENGTH).all? { |grid_x| @filled.include? [grid_x,filled_y] }
         @filled.compact.each { |xy| @filled.delete(xy) if xy[1] == filled_y }
         @filled.compact!
         @filled = @filled.map { |fill_x, fill_y| [fill_x, fill_y - 1] if fill_y > filled_y }
         @line.play
-        check_for_lines
       end
     end
     @lines+=1
   end
 
   def draw
+    check_for_lines
+    @filled.compact!
+    @filled.each { |fill| @filled.delete(fill) if fill[0] < 0 || fill[1] < 0 || fill[0] > GRID_LENGTH}
     @filled.each { |x,y| @image.draw(Grid.x_to_px(x),Grid.y_to_px(y), 100) if x && y }
   end
 end
