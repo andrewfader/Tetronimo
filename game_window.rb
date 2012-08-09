@@ -23,15 +23,21 @@ class GameWindow < Gosu::Window
       if button_down? Gosu::KbDown or button_down? Gosu::GpDown then
         @piece.drop_faster
       end
-      if button_down? Gosu::KbUp or button_down? Gosu::GpUp then
-        @piece.rotate_right
-        @piece.draw
-      end
     else
       if button_down? Gosu::KbEnter or button_down? Gosu::KbReturn then
         @game_start = true
         @grid = Grid.new(self)
         @piece = Piece.new(self, @grid)
+      end
+    end
+  end
+
+  def button_up(id)
+    if @game_start
+      case id
+      when Gosu::KbUp, Gosu::GpUp
+        @piece.rotate_right
+        @piece.draw
       end
     end
   end

@@ -68,10 +68,6 @@ class Piece
 
   def rotate_right
     @rotation < 3 ? @rotation += 1 : @rotation = 0
-    @rotation < 3 ? @rotation += 1 : @rotation = 0
-    @rotation < 3 ? @rotation += 1 : @rotation = 0
-    @rotation < 3 ? @rotation += 1 : @rotation = 0
-    @rotation < 3 ? @rotation += 1 : @rotation = 0
   end
 
   def move(amount=VERTICAL_MOVEMENT_AMOUNT)
