@@ -10,7 +10,7 @@ class Piece
     @x = 512
     @y = Grid::GRID_TOP
     type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
-    @shape = Piece.set_shape(type)
+    @shape = Piece.get_shape(type)
     @grid = grid
     @window = window
   end
@@ -22,7 +22,7 @@ class Piece
     end
   end
 
-  def self.set_shape(type)
+  def self.get_shape(type)
     case type
     when :I
       [[1,0],[2,0],[3,0]]
