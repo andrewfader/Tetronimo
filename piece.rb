@@ -5,11 +5,11 @@ class Piece
   VERTICAL_MOVEMENT_AMOUNT = 12
 
   attr_accessor :x, :y, :shape
-  def initialize(window, grid)
+  def initialize(window, grid, type=nil)
     @image = Gosu::Image.new(window, 'block.png', false)
     @x = 512
     @y = Grid::GRID_TOP
-    type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
+    type ||= [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @shape = Piece.get_shape(type)
     @grid = grid
     @window = window
