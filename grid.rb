@@ -48,7 +48,7 @@ class Grid
     @to_fill << firstxy
 
     shift_up = 0
-    piece.current_shape.each do |shape_x,shape_y|
+    piece.shape.each do |shape_x,shape_y|
       shapexy = [firstxy[0] + shape_x,firstxy[1] - shape_y + shift_up]
       while @filled.include?(shapexy) || shapexy[1] < 0
         shift_up += 1
