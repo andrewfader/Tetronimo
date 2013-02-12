@@ -10,7 +10,14 @@ class Piece
     @x = 512
     @y = Grid::GRID_TOP
     type ||= [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
-    @shape = Piece.get_shape(type)
+    @shape =
+      {I: [[1,0],[2,0],[3,0]],
+       J: [[1,0],[2,0],[2,-1]],
+       L: [[1,0],[2,0],[2,-1]],
+       O: [[0,1],[1,1],[1,0]],
+       S: [[1,0],[0,-1],[-1,-1]],
+       T: [[-1,0],[1,0],[0,-1]],
+       Z: [[-1,0],[-1,-1],[-2,-1]]}[type]
     @grid = grid
     @window = window
   end
@@ -19,25 +26,6 @@ class Piece
     @image.draw(@x,@y,100)
     @shape.each do |x,y|
       @image.draw(@x+Grid::PX_PER_BLOCK*x,@y+Grid::PX_PER_BLOCK*y, 100)
-    end
-  end
-
-  def self.get_shape(type)
-    case type
-    when :I
-      [[1,0],[2,0],[3,0]]
-    when :J
-      [[1,0],[2,0],[2,-1]]
-    when :L
-      [[1,0],[2,0],[2,-1]]
-    when :O
-      [[0,1],[1,1],[1,0]]
-    when :S
-      [[1,0],[0,-1],[-1,-1]]
-    when :T
-      [[-1,0],[1,0],[0,-1]]
-    when :Z
-      [[-1,0],[-1,-1],[-2,-1]]
     end
   end
 
@@ -61,7 +49,7 @@ class Piece
     if @x > Grid::GRID_LEFT
       if @shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK > Grid::GRID_LEFT }
         if (0..amount).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x-test),Grid.nearest_y(@y)]) &&
-                          @shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x-test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
+          @shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x-test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
           @x -= amount
         end
       end
@@ -72,7 +60,7 @@ class Piece
     if @x < Grid::GRID_RIGHT
       if @shape.all? { |shape| @x + shape[0]*Grid::PX_PER_BLOCK < Grid::GRID_RIGHT }
         if (0..amount).all? { |test| !@grid.filled.include?([Grid.nearest_x(@x+test),Grid.nearest_y(@y)]) &&
-                          @shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x+test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
+          @shape.all? { |shape| !@grid.filled.include?([Grid.nearest_x(@x+test + shape[0]*Grid::PX_PER_BLOCK),Grid.nearest_y(@y + shape[1]*Grid::PX_PER_BLOCK)]) } }
           @x += amount
         end
       end
