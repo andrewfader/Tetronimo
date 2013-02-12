@@ -1,4 +1,5 @@
 require './grid'
+require 'matrix'
 class Piece
   HORIZONTAL_MOVEMENT_AMOUNT = 28
   VERTICAL_MOVEMENT_AMOUNT = 12
@@ -9,8 +10,7 @@ class Piece
     @x = 512
     @y = Grid::GRID_TOP
     # type = [:I, :O].shuffle.first
-    type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
-    @shape = Piece.set_shape(type)
+    @type = [:I,:J,:L,:O,:S,:T,:Z].shuffle.first
     @rotation = 0
     @grid = grid
     @window = window
@@ -24,46 +24,30 @@ class Piece
   end
 
   def current_shape
-    @shape[@rotation]
+    Piece.set_shape(@type, @rotation)
   end
 
-  def self.set_shape(type)
-    case type
+  def self.set_shape(type, rotation)
+    shape = case type
     when :I
-      {0 => [[1,0],[2,0],[3,0]],
-       1 => [[0,-1],[0,-2],[0,-3]],
-       2 => [[-1,0],[-2,0],[-3,0]],
-       3 => [[0,1],[0,2],[0,3]] }
+      [[1,0],[2,0],[3,0]]
     when :J
-      {0 => [[1,0],[2,0],[2,-1]],
-       1 => [[0,-1],[0,-2],[-1,-2]],
-       2 => [[-1,0],[-2,0],[-2,1]],
-       3 => [[0,1],[0,2],[1,2]] }
+      [[1,0],[2,0],[2,-1]]
     when :L
-      {0 => [[1,0],[2,0],[2,-1]],
-       1 => [[0,-1],[0,-2],[-1,-2]],
-       2 => [[-1,0],[-2,0],[-2,1]],
-       3 => [[0,1],[0,2],[1,2]] }
+      [[1,0],[2,0],[2,-1]]
     when :O
-      (0..3).each_with_index.inject({}) do |hash,index|
-        hash.merge!({index[0] => [[0,1],[1,1],[1,0]]})
-      end
+      [[0,1],[1,1],[1,0]]
     when :S
-      {0 => [[1,0],[0,-1],[-1,-1]],
-       1 => [[0,-1],[1,-1],[1,-2]],
-       2 => [[1,0],[0,-1],[-1,-1]],
-       3 => [[0,-1],[1,-1],[1,-2]] }
+      [[1,0],[0,-1],[-1,-1]]
     when :T
-      {0 => [[-1,0],[1,0],[0,-1]],
-       1 => [[0,-1],[0,1],[-1,0]],
-       2 => [[1,0],[-1,0],[0,1]],
-       3 => [[0,1],[0,-1],[1,0]] }
+      [[-1,0],[1,0],[0,-1]]
     when :Z
-      {0 => [[-1,0],[-1,-1],[-2,-1]],
-       1 => [[0,1],[1,1],[1,2]],
-       2 => [[-1,0],[-1,-1],[-2,-1]],
-       3 => [[0,1],[1,1],[1,2]] }
+      [[-1,0],[-1,-1],[-2,-1]]
     end
+    rotation.times do
+      shape = shape.map{|arr|(Matrix[arr] * Matrix[[0,-1],[1,0]]).to_a.flatten}
+    end
+    shape.to_a
   end
 
   def rotate_right
