@@ -36,7 +36,7 @@ class GameWindow < Gosu::Window
     if @game_start
       case id
       when Gosu::KbUp, Gosu::GpUp
-        @piece.rotate_right
+        @piece.rotate
         @piece.draw
       end
     end

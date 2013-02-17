@@ -29,7 +29,7 @@ class Piece
     end
   end
 
-  def rotate_right
+  def rotate
     @shape = @shape.map{|arr|(Matrix[arr] * Matrix[[0,-1],[1,0]]).to_a.flatten}
   end
 

@@ -20,7 +20,7 @@ class Grid
   end
 
   def self.nearest_x(x)
-    nearest_x = ((x - GRID_LEFT)/PX_PER_BLOCK).round
+    nearest_x = ((x - GRID_LEFT)/PX_PER_BLOCK).ceil
     nearest_x = 0 if nearest_x < 0
     nearest_x = GRID_LENGTH if nearest_x > GRID_LENGTH
     nearest_x

@@ -12,11 +12,11 @@ describe Piece do
       let(:type) { :I }
       it "rotates" do
         piece.shape.should == [[1,0],[2,0],[3,0]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[0,-1],[0,-2],[0,-3]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[-1,0],[-2,0],[-3,0]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[0,1],[0,2],[0,3]]
       end
     end
@@ -25,11 +25,11 @@ describe Piece do
       let(:type) { :J }
       it "rotates" do
         piece.shape.should == [[1,0],[2,0],[2,-1]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[0,-1],[0,-2],[-1,-2]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[-1,0],[-2,0],[-2,1]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[0,1],[0,2],[1,2]]
       end
     end
@@ -38,11 +38,11 @@ describe Piece do
       let(:type) { :L }
       it "rotates" do
         piece.shape.should == [[1,0],[2,0],[2,-1]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[0,-1],[0,-2],[-1,-2]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[-1,0],[-2,0],[-2,1]]
-        piece.rotate_right
+        piece.rotate
         piece.shape.should == [[0,1],[0,2],[1,2]]
       end
     end
@@ -51,11 +51,11 @@ describe Piece do
       # let(:type) { :O }
       # it "rotates" do
         # piece.shape.should == [[0,1],[1,1],[1,0]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,1],[1,1],[1,0]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,1],[1,1],[1,0]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,1],[1,1],[1,0]]
       # end
     # end
@@ -64,11 +64,11 @@ describe Piece do
       # let(:type) { :S }
       # it "rotates" do
         # piece.shape.should == [[1,0],[0,-1],[-1,-1]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,-1],[1,-1],[1,-2]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[1,0],[0,-1],[-1,-1]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,-1],[1,-1],[1,-2]]
       # end
     # end
@@ -77,11 +77,11 @@ describe Piece do
       # let(:type) { :T }
       # it "rotates" do
         # piece.shape.should == [[-1,0],[1,0],[0,-1]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,-1],[0,1],[-1,0]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[1,0],[-1,0],[0,1]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,1],[0,-1],[1,0]]
       # end
     # end
@@ -90,11 +90,11 @@ describe Piece do
       # let(:type) { :Z }
       # it "rotates" do
         # piece.shape.should == [[-1,0],[-1,-1],[-2,-1]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,1],[1,1],[1,2]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[-1,0],[-1,-1],[-2,-1]]
-        # piece.rotate_right
+        # piece.rotate
         # piece.shape.should == [[0,1],[1,1],[1,2]]
       # end
     # end
